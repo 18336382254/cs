@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset=utf-8 "UTF-8"/>
+    <title>快递单查询</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta content="yes" name="apple-mobile-web-app-capable" />
+    <meta content="black" name="apple-mobile-web-app-status-bar-style" />
+    <meta content="telephone=no" name="format-detection" />
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link href="/static/wap/css/layui.css" tppabs="https://imgffcs.smxs.com/Public/Ffcs/layui/css/layui.css" rel="stylesheet" type="text/css" />
+    <link href="/static/wap/css/base.css" tppabs="https://imgffcs.smxs.com/Public/Ffcs/css/base.css" rel="stylesheet" type="text/css" /><link href="/static/wap/css/main.css" tppabs="https://imgffcs.smxs.com/Public/Ffcs/css/base.css" rel="stylesheet" type="text/css" />
+    <link href="/static/wap/css/public.css" tppabs="https://imgffcs.smxs.com/Public/Ffcs/css/public.css" rel="stylesheet" type="text/css" />
+    <link href="/static/wap/css/swiper.min.css" tppabs="https://imgffcs.smxs.com/Public/Ffcs/css/swiper.min.css" rel="stylesheet" type="text/css" />
+    <script src="/static/wap/js/jquery.min.js"></script>
+    <!-- <script src="/static/wap/js/swiper.min.js" tppabs="https://imgffcs.smxs.com/Public/Ffcs/js/swiper.min.js"></script>-->
+    <style>
+        /*查询页面*/
+
+        .pay-btn {
+            outline: unset;
+        }
+
+        .pay_title {
+            font-size: 16px;
+            width: 100%;
+            margin: 10px auto;
+        }
+
+        .pay_select {
+            font-size: 18px;
+            color: #FF4B4B;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .red_line {
+            display: block;
+            width: 20px;
+            height: 4px;
+            background-color: #FF4B4B;
+            margin: 0 auto;
+        }
+
+        .swiper-container {
+            width: 100%;
+            height: 100%;
+        }
+
+        .swiper-slide {
+            text-align: center;
+            font-size: 18px;
+            background: unset;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            -webkit-justify-content: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            -webkit-align-items: center;
+            align-items: center;
+        }
+
+        .unpay_list {
+            display: block;
+            width: 100%;
+        }
+
+        .pay_list {
+            width: 100%;
+        }
+
+
+
+
+        .oh_list {
+            overflow: hidden;
+        }
+        .oh_box {
+            border-bottom: 1px solid #ddd;
+            padding: 5px 0;
+        }
+        .oh_name {
+            position: relative;
+            padding-left: 60px;
+            overflow: hidden;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            height: 26px;
+            line-height: 26px;
+            text-align: right;
+        }
+        .oh_name span {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 26px;
+            width: 60px;
+            text-align: left;
+        }
+        .oh_name .on {
+            color: red;
+        }
+        .oh_look {
+            display: block;
+            height: 26px;
+            background-color: #F90;
+            line-height: 26px;
+            text-align: center;
+            display: block;
+            color: #fff;
+            margin: 3px auto 0;
+            border-radius: 4px;
+            width: 120px;
+        }
+    </style>
+</head>
+
+<body>
+<style>
+    .subhead_cesuan {
+        display: block;
+        width: 100%;
+        height: 40px;
+        background: rgba(0, 0, 0, 1);
+        opacity: 0.7;
+    }
+
+    .ljlq {
+        width: 80px;
+        height: 30px;
+        line-height: 30px;
+        font-size: 13px;
+        float: right;
+        padding: unset;
+        margin-top: 5px;
+        border-radius: 6px;
+        margin-bottom: unset;
+        margin-right: 2px;
+        color: #ffffff;
+        border: 1px solid #ffffff;
+        background-color: unset;
+    }
+
+    .gonggao {
+        width: 20px;
+        height: auto;
+        margin-top: 10px;
+        margin-left: 9px;
+        float: left;
+    }
+
+    .zymj_title {
+        display: none;
+        color: #fff;
+        display: inline-block;
+        float: left;
+        height: 30px;
+        font-size: 14px;
+        line-height: 30px;
+        margin-top: 5px;
+        width: 190px;
+        margin-left: 6px;
+        white-space: nowrap;
+        animation: 8s wordsLoop infinite;
+        animation-timing-function: linear;
+        -webkit-animation-timing-function: linear;
+        /* Safari 和 Chrome */
+        overflow: hidden;
+    }
+
+    @keyframes wordsLoop {
+        0% {
+            transform: translateX(190px);
+            -webkit-transform: translateX(190px);
+        }
+        100% {
+            transform: translateX(-190px);
+            -webkit-transform: translateX(-190px);
+        }
+    }
+
+    @-webkit-keyframes wordsLoop {
+        0% {
+            transform: translateX(190px);
+            -webkit-transform: translateX(190px);
+        }
+        100% {
+            transform: translateX(-190px);
+            -webkit-transform: translateX(-190px);
+        }
+    }
+
+    .subhead_close {
+        height: 40px;
+        width: 40px;
+        float: right;
+        display: block;
+        background-image: url("/static/wap/img/close.png")/*tpa=https://imgffcs.smxs.com/Public/Ffcs/css/img/close.png*/
+    ;
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: 10px 10px;
+    }
+    *{
+        background-color: #fff;
+    }
+    body{
+        background-color: #fff;
+    }
+    .zymj_gzh_cover {
+        display: none;
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        left: 0;
+        top: 0;
+        background: rgba(0, 0, 0, 1);
+        opacity: 0.7;
+        z-index: 99;
+    }
+
+    .zymj_gzh {
+        display: none;
+        width: 360px;
+        height: 430px;
+        z-index: 1001;
+        position: fixed;
+        left: 50%;
+        margin-left: -180px;
+        top: 50%;
+        margin-top: -215px;
+        background-image: url("/static/wap/img/background.png")/*tpa=https://imgffcs.smxs.com/Public/Ffcs/css/img/background.png*/
+    ;
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center;
+    }
+
+    .zymj_gzh p {
+        text-align: center;
+        font-size: 13px;
+        color: #C3272B;
+    }
+
+    .zymj_gzh_inside {
+        font-family: "KaiTi";
+        width: 300px;
+        height: auto;
+        padding: 6px 0;
+        text-align: center;
+        background: rgba(255, 255, 255, .4);
+        border-radius: 10px;
+        margin: 0 auto;
+        margin-top: 250px;
+    }
+
+    .zymj_gzh_inside p {
+        opacity: 1;
+        color: #C3272B;
+        font-size: 16px;
+    }
+
+    .zymj_gzh_number {
+        width: 100px;
+        height: 30px;
+        display: inline-block;
+        background-color: #ffffff;
+        color: #C3272B;
+        margin: 10px auto;
+        border-radius: 4px;
+        line-height: 30px;
+    }
+
+    .zymj_gzh_copy {
+        width: 100px;
+        height: 30px;
+        background-color: #C3272B;
+        color: #ffffff;
+        border-radius: 4px;
+        line-height: 30px;
+        margin: 0 auto;
+        margin-bottom: 10px;
+    }
+
+    #zymj_go_gzh {
+        font-size: 14px;
+    }
+
+    .zymj_gzh_close {
+        width: 40px;
+        height: 40px;
+        position: absolute;
+        right: 0;
+        top: 0;
+        background-image: url("/static/wap/img/close2.png")/*tpa=https://imgffcs.smxs.com/Public/Ffcs/css/img/close2.png*/
+    ;
+        background-repeat: no-repeat;
+        background-size: 20px 20px;
+        background-position: center;
+    }
+
+    .head_kefu {
+        position: absolute;
+        height: 25px;
+        line-height: 25px;
+        border: 1px solid #e49d6d;
+        border-radius: 5px;
+        padding: 0 5px;
+        display: block;
+        color: #e49d6d;
+        right: 90px;
+        top: 9px;
+    }
+    .query_form .btn{
+        background-color:green;
+    }
+    .oh_name{text-align: left}
+    .oh_box{margin:10px}
+</style>
+<div class="zymj_gzh_cover">
+</div>
+
+<script src="/static/wap/js/clipboard.min.js" tppabs="https://imgffcs.smxs.com/Public/Ffcs/js/clipboard.min.js"></script>
+<script src="/static/wap/js/jquery.min.js" tppabs="https://imgffcs.smxs.com/Public/Ffcs/external/js/jquery.min.js"></script>
+<script>
+    $(".head_kefu").click(function() {
+        $(".add_assistant,.add_assistant_cover").fadeIn(200);
+    });
+    $(".subhead_close").click(function() {
+        $(".subhead_cesuan").hide();
+    });
+    $(".ljlq").click(function() {
+        $(".zymj_gzh,.zymj_gzh_cover").fadeIn(200);
+    });
+    $(".zymj_gzh_close,.zymj_gzh_cover").click(function() {
+        $(".zymj_gzh,.zymj_gzh_cover").hide();
+    });
+    var clipboard11 = new Clipboard('#zymj_gzh_copy', {
+        text: function() {
+            return 'smxsgw';
+        }
+    });
+    var clipboard12 = new Clipboard('#zymj_go_gzh', {
+        text: function() {
+            return 'smxsgw';
+        }
+    });
+    $("#zymj_gzh_copy").click(function() {
+        layui.layer.msg("复制成功", {
+            icon: 6
+        });
+    });
+    $("#zymj_go_gzh").click(function() {
+        window.location.href = 'weixin://';
+    });
+</script>
+<div class="his_bgcolor_box">
+    <div class="query_form">
+        <div class="tip"><span class="red">温馨提示：</span>请核实您填写的快递单号，以免您的快递丢失！！</div>
+        <form action="{:url('index/index/express')}" method="post">
+            <input type="text" name="no" value="" nolocal="true" placeholder="请输入您的快递单号" class="input">
+            <button class="btn" type="submit">查询</button>
+        </form>
+        <ul class="faq_feedback">
+        </ul>
+    </div>
+</div>
+<div class="his_bgcolor_box history_order">
+    {volist name="list" id="vo"}
+    <div class="oh_list">
+        {volist name="vo" id="v"}
+        <div class="oh_box">
+
+            <div class="oh_name">
+                <span>时间：</span>{$v.time}</div>
+            <div class="oh_name">
+                <span>地点：</span>{$v.content}</div>
+
+        </div>
+        {/volist}
+    </div>
+    {/volist}
+
+    <div class="swiper-container">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide">
+                <div class="order_list pay_list">
+                </div>
+            </div>
+            <div class="swiper-slide">
+                <div class="order_list unpay_list">
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="/static/wap/js/jquery.min.js" tppabs="https://imgffcs.smxs.com/Public/Ffcs/external/js/jquery.min.js"></script>
+<style>
+    .add_assistant_cover {
+        display: none;
+        width: 100%;
+        height: 100%;
+        z-index: 69;
+        left: 0;
+        top: 0;
+        position: fixed;
+        background-color: rgba(0, 0, 0, .6);
+    }
+
+    .add_assistant {
+        display: none;
+        width: 360px;
+        height: 560px;
+        position: fixed;
+        left: 50%;
+        margin-left: -180px;
+        top: 50%;
+        margin-top: -280px;
+        z-index: 99;
+        background-color: #ffffff;
+        border-radius: 10px;
+    }
+
+    .weixin_demo {
+        width: 300px;
+        height: auto;
+        margin: 8px auto;
+        display: block;
+    }
+
+    .open_wx {
+        width: 320px;
+        height: 70px;
+        border: unset;
+        background-image: url("open_wechat.png")/*tpa=https://ffcs.smxs.com/Public/Ffcs/css/img/shuimogufeng/open_wechat.png*/
+    ;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+        background-color: unset;
+        display: block;
+        margin: 0 auto;
+    }
+
+    .add_friend {
+        text-align: center;
+        font-size: 15px;
+        margin: 0 auto;
+        color: #999999;
+    }
+
+    .add_friend span {
+        color: #00C204;
+    }
+
+    .zixun {
+        width: 70px;
+        height: auto;
+        position: fixed;
+        right: 0;
+        top: 230px;
+        z-index: 999;
+    }
+
+    .add_assistant_title {
+        font-size: 19px;
+        color: #333333;
+        margin-top: 20px;
+        width: 300px;
+        margin: 0 auto;
+    }
+
+    .add_assistant_close {
+        width: 25px;
+        height: 25px;
+        position: absolute;
+        background-image: url("close-1.png")/*tpa=https://ffcs.smxs.com/Public/Ffcs/css/img/shuimogufeng/close.png*/
+    ;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+        display: block;
+        right: 8px;
+        top: 8px;
+    }
+
+    .add_assistant_block {
+        width: 300px;
+        height: 45px;
+        line-height: 45px;
+        font-size: 17px;
+        color: #C3272B;
+        border: 1px solid #C3272B;
+        margin: 10px auto;
+        border-radius: 4px;
+    }
+
+    .number_left {
+        display: inline-block;
+        width: 198px;
+        text-align: center;
+    }
+
+    .number_right {
+        display: block;
+        width: 100px;
+        text-align: center;
+        color: #FFFFFF;
+        text-align: center;
+        background-color: #C3272B;
+        float: right;
+        border: 1px solid #C3272B;
+        margin-top: -1px;
+        border-radius: 0 4px 4px 0;
+    }
+
+    .add_assistant .service-title {
+        font-weight: bolder;
+        text-align: center;
+        font-size: 24px;
+        margin-top: 25px;
+    }
+
+    .add_assistant .service-line {
+        height: 30px;
+        width: 300px;
+        line-height: 30px;
+        display: flex;
+        font-size: 17px;
+        margin: 10px auto;
+    }
+
+    .add_assistant .way {
+        color: #00A0E9;
+    }
+
+    .add_assistant .gray {
+        color: #999999;
+        font-size: 15px;
+    }
+
+    .add_assistant .tel {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        background-image: url("tel.png")/*tpa=https://ffcs.smxs.com/Public/Ffcs/css/img/shuimogufeng/tel.png*/
+    ;
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: 20px 20px;
+    }
+
+    .connect_way {
+        width: 300px;
+        margin: 6px auto;
+        font-size: 19px;
+    }
+
+    .add_hr {
+        display: block;
+        width: 300px;
+        margin: 10px auto;
+    }
+</style>
+
+<div class="add_assistant_cover">
+</div>
+
+<script src="/static/wap/js/clipboard.min.js" tppabs="https://imgffcs.smxs.com/Public/Ffcs/js/clipboard.min.js"></script>
+<script>
+    $("#add-close,.add_assistant_cover").click(function() {
+        $(".add_assistant_cover,.add_assistant").hide();
+    });
+    $(".zixun,#page_footer_words").click(function() {
+        $(".add_assistant_cover,.add_assistant").fadeIn(300);
+    });
+    var clipboard = new Clipboard('#wx_number', {
+        text: function() {
+            return 'smxs-001';
+        }
+    });
+    var clipboard2 = new Clipboard('#go_wechat', {
+        text: function() {
+            return 'smxs-001';
+        }
+    });
+    $("#wx_number").click(function() {
+        layui.layer.msg("复制成功", {
+            icon: 6
+        });
+    });
+    //打开微信
+    $("#go_wechat").click(function() {
+        window.location.href = 'weixin://';
+    });
+</script>
+<style>
+
+    .back-gzh-cover {
+        display: none;
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        left: 0;
+        top: 0;
+        z-index: 1000;
+        background-color: rgba(0, 0, 0, 0.6);
+    }
+
+    .back-go-gzh {
+        display: none;
+        position: fixed;
+        width: 320px;
+        height: 320px;
+        left: 50%;
+        top: 50%;
+        z-index: 1001;
+        margin-top: -160px;
+        margin-left: -160px;
+        background-image: url("/static/wap/img/back_go_gzh.png")/*tpa=https://imgffcs.smxs.com/Public/Ffcs/css/img/shuimogufeng/back_go_gzh.png*/
+    ;
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+    .back-go-gzh .wxh {
+        position: absolute;
+        width: 160px;
+        height: 160px;
+        left: 50%;
+        top: 50%;
+        margin-top: -80px;
+        margin-left: -80px;
+        border: 3px solid #000000;
+    }
+
+    .back-go-gzh .close_2x {
+        width: 100px;
+        height: 40px;
+        position: absolute;
+        bottom: -130px;
+        left: 50%;
+        margin-left: -50px;
+        background-color: unset;
+        font-size: 16px;
+        color: #ffff;
+        border: unset;
+    }
+
+    .back-go-gzh .copy-gzh {
+        width: 100px;
+        height: 40px;
+        background-color: #C3272B;
+        color: #ffffff;
+        font-size: 16px;
+        line-height: 40px;
+        opacity: 1;
+        position: absolute;
+        top: 340px;
+        left: 50%;
+        margin-left: -50px;
+        border: unset;
+    }
+
+    .back-go-gzh .receive {
+        font-size: 15px;
+        margin: 20px;
+        text-align: center;
+    }
+
+    .back-go-gzh .receive span {
+        font-weight: bolder;
+    }
+
+    .back-go-gzh .save {
+        text-align: center;
+        font-size: 15px;
+        margin-top: 190px;
+    }
+
+    .back-go-gzh .open-wx {
+        font-size: 10px;
+        text-align: center;
+        margin-top: 10px;
+        color: #999999;
+    }
+
+    .back-go-gzh .open-wx span {
+        color: #333333;
+    }
+</style>
+<script src="/static/wap/js/clipboard.min.js" tppabs="https://imgffcs.smxs.com/Public/Ffcs/js/clipboard.min.js"></script>
+<script>
+    $("#go_gzh").click(function() {
+        $(".back-go-gzh,.back-gzh-cover").fadeIn(300);
+    });
+    $(".back-gzh-cover,.close_2x").click(function() {
+        $(".back-go-gzh,.back-gzh-cover").fadeOut(200);
+    });
+    $(".back-gzh-cover,.back-go-gzh").bind('touchmove', function(e) {
+        e.preventDefault();
+    })
+    var clipboard5 = new Clipboard('#fuzhigzh', {
+        text: function() {
+            return 'smxsgw';
+        }
+    });
+    $("#fuzhigzh").click(function() {
+        $(".back-go-gzh,.back-gzh-cover").fadeOut(200);
+        window.location.href = 'weixin://';
+    });
+</script>
+<script src="/static/wap/js/layui.js" tppabs="https://imgffcs.smxs.com/Public/Ffcs/layui/layui.js"></script>
+<script src="/static/wap/js/calendar.min.js" tppabs="https://imgffcs.smxs.com/Public/Ffcs/js/calendar.min.js"></script>
+<script src="/static/wap/js/index.js" tppabs="https://imgffcs.smxs.com/Public/Ffcs/js/index.js"></script>
+</body>
+
+</html>
